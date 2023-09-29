@@ -1,0 +1,31 @@
+{
+  "name": "n2n_gui",
+  "private": true,
+  "version": "0.0.5",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^1.4.0",
+    "@types/node": "^20.7.0",
+    "nanoid": "^5.0.1",
+    "pinia": "^2.1.6",
+    "sass": "^1.68.0",
+    "vue": "^3.3.4",
+    "vuetify": "^3.3.17"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.4.0",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.4",
+    "vue-tsc": "^1.8.5"
+  },
+  "volta": {
+    "node": "20.7.0"
+  }
+}

@@ -1,0 +1,8 @@
+body {
+    padding: 8vw;
+    background-color: antiquewhite;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}

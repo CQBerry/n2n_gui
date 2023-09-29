@@ -1,0 +1,69 @@
+<script setup lang="ts">
+import { useStore } from '@/stores/properties'
+import Servers from './components/Servers.vue';
+import VirtualNetworkIP from './components/VirtualNetworkIP.vue';
+import CommunityName from './components/CommunityName.vue';
+import EncryptionKey from './components/EncryptionKey.vue';
+import StartOrStop from './components/StartOrStop.vue';
+import Log from './components/Log.vue';
+import "./style.css"
+import { ref, onMounted } from 'vue';
+import { invoke } from '@tauri-apps/api';
+
+const props = useStore()
+
+onMounted(() => {
+    props.load()
+})
+
+const validateSuccessed = ref(null)
+
+let n2nProcessId = 0
+
+async function interactionWithRust() {
+    if (!validateSuccessed.value) {
+        return
+    }
+    props.serviceStarted = !props.serviceStarted
+    // Save server
+    if (!props.servers.includes(props.server)) {
+        props.servers.push(props.server)
+    }
+    if (props.serviceStarted) {
+        n2nProcessId = await invoke('start_n2n',
+            {
+                server: props.server,
+                virtualNetworkIp: props.virtualNetworkIP,
+                communityName: props.communityName,
+                encryptionKey: props.encryptionKey,
+                enableLogging: props.enableLogging
+            })
+    } else {
+        invoke('kill_n2n', { processId: n2nProcessId })
+    }
+}
+
+window.addEventListener('beforeunload', () => { props.save() })
+
+</script>
+
+<template>
+    <v-sheet>
+        <v-form @submit.prevent='interactionWithRust' v-model="validateSuccessed">
+            <Servers></Servers>
+            <VirtualNetworkIP></VirtualNetworkIP>
+            <CommunityName></CommunityName>
+            <EncryptionKey></EncryptionKey>
+            <Log></Log>
+            <StartOrStop></StartOrStop>
+        </v-form>
+    </v-sheet>
+</template>
+
+<style scoped>
+.v-form {
+    display: grid;
+    gap: 2vh;
+    background-color: antiquewhite;
+}
+</style>
