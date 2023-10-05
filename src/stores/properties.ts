@@ -45,6 +45,7 @@ export const useStore = defineStore({
             return false
         },
         validateVirtualIP(virtualIP: string) {
+            if (virtualIP === "") return true
             const pattern = /^((25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(25[0-5]|2[0-4]\d|[01]?\d\d?)/g
             return pattern.test(virtualIP)
         }
